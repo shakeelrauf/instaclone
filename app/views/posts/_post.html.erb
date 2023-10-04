@@ -32,23 +32,33 @@
     <hr />
 
     <!-- News -->
-    <% post.comments.each do |comment| %>
-      <a href="" class="text-dark">
-        <div class="row mb-4 border-bottom pb-2">
-          <div class="col-3">
-            <img src=""
-              class="img-fluid shadow-1-strong rounded" alt="<%= comment.user.email %>" />
-          </div>
+    <div class="detailBox">
+    <div class="actionBox">
+      <ul class="commentList">
+        <% post.comments.each do |comment| %>
+          <li>
+              <div class="commenterImage">
+                <img src="http://placekitten.com/50/50" />
+                <%= comment.user.email %>
+              </div>
+              <div class="commentText">
+                  <p class=""><%= comment.content %></p> <span class="date sub-text"><%= time_ago_in_words(comment.created_at) %></span>
 
-          <div class="col-9">
-            <p class="mb-2"><strong><%= comment.user.email %></strong></p>
-            <p>
-              <u> <%= comment.content %></u>
-            </p>
+              </div>
+          </li>
+          <% end %>
+      </ul>
+      <form class="form-inline row" action="/posts/<%= post.id%>/comment" role="form" method="post">
+          <div class="form-group col-md-9">
+              <input class="form-control" type="text" name="comment[content]" placeholder="Your comments" />
           </div>
-        </div>
-      </a>
-    <% end %>
+          <div class="form-group col-md-3">
+              <button class="btn btn-success">Add</button>
+          </div>
+      </form>
+      </div>
+    </div>
+      
       <div data-controller='likes' class='btn btn-primary'>
         <%= link_to 'javascript:void()', style: 'margin-left: 5px; color: white' , remote: true,
             data: {

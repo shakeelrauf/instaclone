@@ -1,9 +1,9 @@
 class PostsController < ApplicationController
-  before_action :set_post, only: %i[ likes show edit update destroy ]
+  before_action :set_post, only: %i[ likes show edit update destroy comment ]
 
   # GET /posts or /posts.json
   def index
-    @posts = Post.for_followers_and_user(current_user).includes(:user, :comments, [attachment: {file_attachment: :blob}]).
+    @posts = Post.for_followers_and_user(current_user).includes(:user, {comments: :user, attachment: {file_attachment: :blob}}).
               order(created_at: :desc)
     @current_user_likes = @posts.eager_load(:likes).user_likes(current_user)
 
@@ -79,6 +79,14 @@ class PostsController < ApplicationController
     end 
   end
 
+  def comment
+    @post.comments.build(comment_params).save
+    respond_to do |format|
+      format.html { redirect_to posts_url, notice: "Comment has been created" }
+      format.json { head :no_content }
+    end
+  end
+
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_post
@@ -89,5 +97,10 @@ class PostsController < ApplicationController
     def post_params
       params[:post][:user_id] = current_user.id
       params.require(:post).permit(:title, :body, :user_id, attachment_attributes: [:file])
+    end
+
+    def comment_params
+      params[:comment][:user_id] = current_user.id
+      params.require(:comment).permit(:user_id, :content)
     end
 end

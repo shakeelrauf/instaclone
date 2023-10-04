@@ -6,6 +6,7 @@ Rails.application.routes.draw do
   resources :posts do
     member do
       get :likes
+      post :comment
     end
   end
 
@@ -14,7 +15,7 @@ Rails.application.routes.draw do
       get :follow
     end
   end
-  
+
   resources :notifications, only: [ :index ]
   root 'posts#index'
 end
