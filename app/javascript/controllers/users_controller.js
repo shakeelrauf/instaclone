@@ -11,7 +11,7 @@ export default class extends Controller {
       })
       .then((response) => response.json())
       .then(res => {
-        document.getElementById(`user-follow-${userId}`).innerHTML = 'Unfollow'
+        document.getElementById(`user-follow-${userId}`).innerHTML = res.followed ? 'Unfollow' : 'Follow'
       }) 
   }
 }
