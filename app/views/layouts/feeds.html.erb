@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>Instaclone</title>
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <%= csrf_meta_tags %>
+    <%= csp_meta_tag %>
+
+    <%= stylesheet_link_tag "application", "data-turbo-track": "reload" %>
+    <%= javascript_include_tag "application", "data-turbo-track": "reload"%>
+  </head>
+  <body>
+  		<% if user_signed_in? %>
+			  <%= turbo_stream_from dom_id(current_user, :broadcast_to) %>
+      	<%= render partial: 'layouts/feeds/header' %>
+    	<% end %>	
+    	<div class="container">
+				 <div class="row">
+		      <%= yield %>
+		    </div>
+		  </div>
+  </body>
+</html>

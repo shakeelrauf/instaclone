@@ -1,0 +1,20 @@
+<div class="list-item" data-id="4">
+   <div><a href="#" data-abc="true"><span class="w-48 avatar gd-success"><img src="https://img.icons8.com/color/48/000000/guest-male.png" alt="."></span></a></div>
+   <div class="flex">
+      <a href="#" class="item-author text-color" data-abc="true"><%= user.email %></a>
+
+      <div data-controller='users' class='btn btn-primary'>
+        <%= link_to 'javascript:void()', style: 'margin-left: 5px; color: white' , remote: true, id: "user-follow-#{user.id}",
+            data: {
+                controller: 'users',
+                action: 'click->users#follow',
+                'user-id-value': user.id
+            } do %>
+               <%= follow_user? user.id %> 
+        <% end %>   
+      </div>
+   </div>
+   <div class="no-wrap">
+      <div class="item-date text-muted text-sm d-none d-md-block"><%= time_ago_in_words user.created_at %></div>
+   </div>
+</div>

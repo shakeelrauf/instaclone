@@ -1,7 +1,20 @@
 Rails.application.routes.draw do
-  devise_for :users
-  # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
 
-  # Defines the root path route ("/")
-  # root "articles#index"
+  mount ActionCable.server => '/cable'
+  devise_for :users
+
+  resources :posts do
+    member do
+      get :likes
+    end
+  end
+
+  resources :users do
+    member do
+      get :follow
+    end
+  end
+  
+  resources :notifications, only: [ :index ]
+  root 'posts#index'
 end

@@ -1,0 +1,65 @@
+<div class="card px-3 pt-3" style="max-width: 32rem">
+  <!-- News block -->
+  <div>
+    <!-- Featured image -->
+    <div class="bg-image hover-overlay shadow-1-strong ripple rounded-5 mb-4" data-mdb-ripple-color="light">
+
+      <%= image_tag url_for(post.attachment&.file), class: 'img-fluid' if post.attachment&.file&.present? %>
+      <a href="#!">
+        <div class="mask" style="background-color: rgba(251, 251, 251, 0.15);"></div>
+      </a>
+    </div>
+
+    <!-- Article data -->
+    <div class="row mb-3">
+      <div class="col-6">
+      </div>
+
+      <div class="col-6 text-end">
+        <u> <%= time_ago_in_words(post.created_at) %></u>
+      </div>
+    </div>
+
+    <!-- Article title and description -->
+    <a href="" class="text-dark">
+      <h5><%= post.user.email %></h5>
+
+      <p>
+        <%= post.body %>
+      </p>
+    </a>
+
+    <hr />
+
+    <!-- News -->
+    <% post.comments.each do |comment| %>
+      <a href="" class="text-dark">
+        <div class="row mb-4 border-bottom pb-2">
+          <div class="col-3">
+            <img src=""
+              class="img-fluid shadow-1-strong rounded" alt="<%= comment.user.email %>" />
+          </div>
+
+          <div class="col-9">
+            <p class="mb-2"><strong><%= comment.user.email %></strong></p>
+            <p>
+              <u> <%= comment.content %></u>
+            </p>
+          </div>
+        </div>
+      </a>
+    <% end %>
+      <div data-controller='likes' class='btn btn-primary'>
+        <%= link_to 'javascript:void()', style: 'margin-left: 5px; color: white' , remote: true,
+            data: {
+                controller: 'likes',
+                action: 'click->likes#like',
+                'likes-post-id-value': post.id
+            } do %>
+
+            <%= @current_user_likes[post.id] ? 'Unlike' : 'Like' %>
+        <% end %>   
+      </div>
+    <div id="post_<%=post.id%>_likes_count" class="btn btn-secondary"><%= post.likes.size %></div>
+  </div>
+</div>
